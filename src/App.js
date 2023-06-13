@@ -8,7 +8,7 @@ const routes=require('./routes/index.js')
 const path=require('path')
 // require('./mongodb.js')
 
-// app.set('port',process.env.PORT || 4200)
+// app.set('port',process.env.PORT || 4200) 
 
 app.use(morgan('dev')) 
 app.use(bodyParser.urlencoded({extended:false}))
