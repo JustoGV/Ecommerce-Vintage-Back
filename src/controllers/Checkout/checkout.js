@@ -12,7 +12,7 @@ const checkout= async (req, res) => {
     const product = req.body.product;
     // console.log(product.tittle,'acaa')
 
-    const URL = 'http://localhost:3000';
+    const URL = 'https://app-kappa-blond.vercel.app';
 
     const preference = {
       items: [
@@ -29,7 +29,7 @@ const checkout= async (req, res) => {
       },
       notification_url: `${URL}/api/notify`
     };
-
+    console.log(URL)
     const response = await mercadopago.preferences.create(preference);
 
     res.status(200).send({ url: response.body.init_point });
