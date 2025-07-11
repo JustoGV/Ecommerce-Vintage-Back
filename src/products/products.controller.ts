@@ -30,20 +30,12 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) { }
 
   @Post()
-@UseInterceptors(FileInterceptor('image'))
-async create(
-  @Body() createProductDto: CreateProductDto,
-  @UploadedFile() file: Express.Multer.File,
-) {
-  let imageUrl: string | undefined = undefined;
-  if (file) {
-    const uploadResult = await cloudinary.uploader.upload(file.path, {
-      folder: 'products',
-    });
-    imageUrl = uploadResult.secure_url;
+  async create(@Body() createProductDto: CreateProductDto) {
+    console.log('Create product:', createProductDto);
+    return this.productsService.create(createProductDto, createProductDto.image);
   }
-  return this.productsService.create(createProductDto, imageUrl);
-}
+
+
 
   @Get()
   findAll() {
@@ -66,22 +58,14 @@ async create(
   }
 
   @Patch(':id')
-  @UseInterceptors(FileInterceptor('image'))
   async update(
     @Param('id') id: string,
     @Body() updateProductDto: UpdateProductDto,
-    @UploadedFile() file: Express.Multer.File,
   ) {
-    let imageUrl: string | undefined = undefined;
-    if (file) {
-      const uploadResult = await cloudinary.uploader.upload(file.path, {
-        folder: 'products',
-      });
-      imageUrl = uploadResult.secure_url;
-    }
-    console.log('Update product:', { id, updateProductDto, imageUrl });
-    return this.productsService.update(id, updateProductDto, imageUrl);
+    console.log('Update product:', { id, updateProductDto });
+    return this.productsService.update(id, updateProductDto, updateProductDto.image);
   }
+
 
   @Delete(':id')
   remove(@Param('id') id: string) {
