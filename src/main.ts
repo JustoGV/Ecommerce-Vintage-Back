@@ -6,7 +6,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://your-frontend-domain.com'],
+    origin: [
+      'http://localhost:3000',
+      'https://ecommerce-front-ruby.vercel.app',
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
@@ -20,8 +23,6 @@ async function bootstrap() {
       },
     }),
   );
-
-
 
   const port = process.env.PORT || 4200;
   await app.listen(port);
