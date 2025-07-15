@@ -52,6 +52,7 @@ let AuthService = class AuthService {
     }
     async login(email, password) {
         const user = await this.usersService.findByEmail(email);
+        console.log(user, 'userr');
         if (!user || user.password !== password) {
             throw new common_1.UnauthorizedException('Invalid credentials');
         }
