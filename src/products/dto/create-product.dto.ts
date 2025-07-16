@@ -1,4 +1,5 @@
 import { IsString, IsNumber, IsOptional, IsUUID, Min } from 'class-validator';
+import { Column } from 'typeorm';
 
 export class CreateProductDto {
   @IsString()
@@ -9,6 +10,7 @@ export class CreateProductDto {
 
   @IsNumber()
   @Min(0)
+  @Column({ nullable: true }) // Agrega nullable
   price: number;
 
   @IsOptional()
