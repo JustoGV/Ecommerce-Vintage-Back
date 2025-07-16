@@ -22,7 +22,7 @@ import { Product } from './entities/product.entity';
       url: process.env.DATABASE_URL,
       entities: [User, Category, Product],
       autoLoadEntities: true,
-      synchronize: true, // Solo para desarrollo
+      synchronize: false, // Solo para desarrollo
       ssl: {
         rejectUnauthorized: false,
       },
