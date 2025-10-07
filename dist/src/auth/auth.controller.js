@@ -20,6 +20,16 @@ let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
+    healthCheck() {
+        return {
+            message: 'Auth API is working!',
+            timestamp: new Date().toISOString(),
+            endpoints: [
+                'POST /api/auth/login',
+                'POST /api/auth/register'
+            ]
+        };
+    }
     async login(loginDto) {
         return this.authService.login(loginDto.email, loginDto.password);
     }
@@ -28,6 +38,12 @@ let AuthController = class AuthController {
     }
 };
 exports.AuthController = AuthController;
+__decorate([
+    (0, common_1.Get)('health'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "healthCheck", null);
 __decorate([
     (0, common_1.Post)('login'),
     __param(0, (0, common_1.Body)()),

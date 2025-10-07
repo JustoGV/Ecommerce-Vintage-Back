@@ -3,6 +3,11 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 export declare class AuthController {
     private authService;
     constructor(authService: AuthService);
+    healthCheck(): {
+        message: string;
+        timestamp: string;
+        endpoints: string[];
+    };
     login(loginDto: {
         email: string;
         password: string;
