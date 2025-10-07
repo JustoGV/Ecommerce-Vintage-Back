@@ -9,7 +9,6 @@ async function bootstrap() {
         origin: '*',
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     });
-    app.setGlobalPrefix('api');
     app.useGlobalPipes(new common_1.ValidationPipe({
         transform: true,
         whitelist: true,
