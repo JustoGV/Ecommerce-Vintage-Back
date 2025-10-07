@@ -10,9 +10,6 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   });
 
-  // Agregar prefijo global para las APIs
-  // app.setGlobalPrefix('api');
-
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -26,5 +23,21 @@ async function bootstrap() {
   const port = process.env.PORT || 4200;
   await app.listen(port);
   console.log(`Backend running on port ${port}`);
+  
+  return app;
 }
-bootstrap();
+
+// Para desarrollo local
+if (require.main === module) {
+  bootstrap();
+}
+
+// Para Vercel
+let app: any;
+export default async (req: any, res: any) => {
+  if (!app) {
+    app = await bootstrap();
+  }
+  const server = app.getHttpAdapter().getInstance();
+  return server(req, res);
+};
