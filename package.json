@@ -28,15 +28,14 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "pg": "^8.16.3",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.0.0",
-    "typeorm": "^0.3.25",
-    "@types/node": "^24.7.0"
+    "typeorm": "^0.3.25"
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.7",
+    "@types/node": "^24.7.0",
     "@types/passport-jwt": "^4.0.1",
-    "@types/passport-local": "^1.0.38"
+    "@types/passport-local": "^1.0.38",
+    "ts-node": "^10.9.2"
   },
   "keywords": [],
   "author": "",

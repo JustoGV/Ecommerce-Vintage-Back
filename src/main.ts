@@ -11,7 +11,7 @@ async function bootstrap() {
   });
 
   // Agregar prefijo global para las APIs
-  app.setGlobalPrefix('api');
+  // app.setGlobalPrefix('api');
 
   app.useGlobalPipes(
     new ValidationPipe({
