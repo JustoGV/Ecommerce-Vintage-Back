@@ -10,6 +10,8 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   });
 
+  // Agregar prefijo global para las APIs
+  app.setGlobalPrefix('api');
 
   app.useGlobalPipes(
     new ValidationPipe({
