@@ -15,6 +15,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { AddImageDto, RemoveImageDto, ReorderImagesDto } from './dto/image-management.dto';
 
 // Cloudinary setup
 const cloudinary = require('cloudinary').v2;
@@ -70,5 +71,29 @@ export class ProductsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.productsService.remove(id);
+  }
+
+  @Post(':id/images')
+  async addImage(
+    @Param('id') id: string,
+    @Body() addImageDto: AddImageDto
+  ) {
+    return this.productsService.addImageToProduct(id, addImageDto.imageUrl);
+  }
+
+  @Delete(':id/images')
+  async removeImage(
+    @Param('id') id: string,
+    @Body() removeImageDto: RemoveImageDto
+  ) {
+    return this.productsService.removeImageFromProduct(id, removeImageDto.imageUrl);
+  }
+
+  @Patch(':id/images/reorder')
+  async reorderImages(
+    @Param('id') id: string,
+    @Body() reorderImagesDto: ReorderImagesDto
+  ) {
+    return this.productsService.reorderProductImages(id, reorderImagesDto.imageUrls);
   }
 }

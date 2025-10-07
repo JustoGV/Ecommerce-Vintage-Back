@@ -24,10 +24,18 @@ export class ProductsService {
       throw new NotFoundException('Category not found');
     }
 
+    // Preparar las URLs de imágenes
+    let imageUrls: string[] = [];
+    if (createProductDto.imageUrls && createProductDto.imageUrls.length > 0) {
+      imageUrls = createProductDto.imageUrls;
+    } else if (imageUrl) {
+      imageUrls = [imageUrl]; // Para compatibilidad con el sistema actual
+    }
+
     const product = this.productsRepository.create({
       ...createProductDto,
       category,
-      imageUrl,
+      imageUrls,
     });
 
     return this.productsRepository.save(product);
@@ -69,8 +77,8 @@ export class ProductsService {
       product.category = category;
     }
 
-    // Excluir categoryId del assign ya que se maneja por separado
-    const { categoryId, price, stock, ...updateData } = updateProductDto;
+    // Excluir categoryId e imageUrls del assign ya que se manejan por separado
+    const { categoryId, price, stock, imageUrls, ...updateData } = updateProductDto;
 
     // Convertir price y stock a number si existen
     if (price !== undefined && price !== null) {
@@ -82,8 +90,15 @@ export class ProductsService {
 
     Object.assign(product, updateData);
 
-    if (imageUrl) {
-      product.imageUrl = imageUrl;
+    // Manejar las URLs de imágenes
+    if (imageUrls && imageUrls.length > 0) {
+      product.imageUrls = imageUrls;
+    } else if (imageUrl) {
+      // Para compatibilidad: si se pasa una sola imagen, agregarla al array
+      if (!product.imageUrls) product.imageUrls = [];
+      if (!product.imageUrls.includes(imageUrl)) {
+        product.imageUrls.push(imageUrl);
+      }
     }
 
     return this.productsRepository.save(product);
@@ -112,5 +127,41 @@ export class ProductsService {
         { query: `%${query}%` }
       )
       .getMany();
+  }
+
+  async addImageToProduct(productId: string, imageUrl: string): Promise<Product> {
+    const product = await this.findOne(productId);
+    
+    if (!product.imageUrls) {
+      product.imageUrls = [];
+    }
+    
+    if (!product.imageUrls.includes(imageUrl)) {
+      product.imageUrls.push(imageUrl);
+    }
+    
+    return this.productsRepository.save(product);
+  }
+
+  async removeImageFromProduct(productId: string, imageUrl: string): Promise<Product> {
+    const product = await this.findOne(productId);
+    
+    if (product.imageUrls) {
+      product.imageUrls = product.imageUrls.filter(url => url !== imageUrl);
+    }
+    
+    return this.productsRepository.save(product);
+  }
+
+  async reorderProductImages(productId: string, imageUrls: string[]): Promise<Product> {
+    const product = await this.findOne(productId);
+    
+    // Verificar que todas las URLs proporcionadas existen en el producto
+    const validUrls = imageUrls.filter(url => 
+      product.imageUrls && product.imageUrls.includes(url)
+    );
+    
+    product.imageUrls = validUrls;
+    return this.productsRepository.save(product);
   }
 }

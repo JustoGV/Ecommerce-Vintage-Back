@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsOptional, IsUUID, Min } from 'class-validator';
+import { IsString, IsNumber, IsOptional, IsUUID, Min, IsArray, IsUrl } from 'class-validator';
 import { Column } from 'typeorm';
 
 export class CreateProductDto {
@@ -22,5 +22,10 @@ export class CreateProductDto {
   categoryId: string;
 
   @IsOptional()
-  image?: any; // Puede ser File, Buffer, o string según cómo lo recibas
+  @IsArray()
+  @IsUrl({}, { each: true })
+  imageUrls?: string[];
+
+  @IsOptional()
+  image?: any; // Para compatibilidad con el sistema actual de upload
 }

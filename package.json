@@ -9,7 +9,9 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "build:prod": "npx nest build"
+    "build:prod": "npx nest build",
+    "migrate:images": "node scripts/migrate-image-urls-simple.js",
+    "migrate:images:ts": "ts-node scripts/migrate-image-urls.ts"
   },
   "dependencies": {
     "@nestjs/config": "^4.0.2",
@@ -30,8 +32,10 @@
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.7",
+    "@types/node": "^24.7.0",
     "@types/passport-jwt": "^4.0.1",
-    "@types/passport-local": "^1.0.38"
+    "@types/passport-local": "^1.0.38",
+    "ts-node": "^10.9.2"
   },
   "keywords": [],
   "author": "",
