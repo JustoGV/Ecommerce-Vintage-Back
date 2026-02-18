@@ -19,6 +19,17 @@ async function bootstrap() {
     const port = process.env.PORT || 4200;
     await app.listen(port);
     console.log(`Backend running on port ${port}`);
+    return app;
 }
-bootstrap();
+if (require.main === module) {
+    bootstrap();
+}
+let app;
+exports.default = async (req, res) => {
+    if (!app) {
+        app = await bootstrap();
+    }
+    const server = app.getHttpAdapter().getInstance();
+    return server(req, res);
+};
 //# sourceMappingURL=main.js.map
