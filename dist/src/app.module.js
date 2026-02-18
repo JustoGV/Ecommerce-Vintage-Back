@@ -35,7 +35,7 @@ exports.AppModule = AppModule = __decorate([
                 url: process.env.DATABASE_URL,
                 entities: [user_entity_1.User, category_entity_1.Category, product_entity_1.Product],
                 autoLoadEntities: true,
-                synchronize: true,
+                synchronize: false,
                 ssl: {
                     rejectUnauthorized: false,
                 },
