@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 
-async function bootstrap() {
+async function createApp() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
@@ -20,10 +20,15 @@ async function bootstrap() {
     }),
   );
 
+  return app;
+}
+
+async function bootstrap() {
+  const app = await createApp();
   const port = process.env.PORT || 4200;
   await app.listen(port);
   console.log(`Backend running on port ${port}`);
-  
+
   return app;
 }
 
@@ -36,7 +41,8 @@ if (require.main === module) {
 let app: any;
 export default async (req: any, res: any) => {
   if (!app) {
-    app = await bootstrap();
+    app = await createApp();
+    await app.init();
   }
   const server = app.getHttpAdapter().getInstance();
   return server(req, res);
