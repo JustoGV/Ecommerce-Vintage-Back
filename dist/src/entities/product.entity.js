@@ -32,6 +32,10 @@ __decorate([
     __metadata("design:type", Number)
 ], Product.prototype, "price", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ default: 'ARS' }),
+    __metadata("design:type", String)
+], Product.prototype, "currency", void 0);
+__decorate([
     (0, typeorm_1.Column)('text', { array: true, nullable: true, default: [] }),
     __metadata("design:type", Array)
 ], Product.prototype, "imageUrls", void 0);

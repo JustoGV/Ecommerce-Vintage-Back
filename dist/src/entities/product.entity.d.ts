@@ -4,6 +4,7 @@ export declare class Product {
     title: string;
     description: string;
     price: number;
+    currency: 'ARS' | 'USD';
     imageUrls: string[];
     stock: number;
     isActive: boolean;

@@ -26,4 +26,10 @@ __decorate([
     (0, class_validator_1.IsBoolean)(),
     __metadata("design:type", Boolean)
 ], UpdateProductDto.prototype, "isActive", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsIn)(['ARS', 'USD']),
+    __metadata("design:type", String)
+], UpdateProductDto.prototype, "currency", void 0);
 //# sourceMappingURL=update-product.dto.js.map

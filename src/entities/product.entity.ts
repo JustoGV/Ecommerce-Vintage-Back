@@ -15,6 +15,9 @@ export class Product {
   @Column('decimal', { precision: 10, scale: 2 })
   price: number;
 
+  @Column({ default: 'ARS' })
+  currency: 'ARS' | 'USD';
+
   @Column('text', { array: true, nullable: true, default: [] })
   imageUrls: string[];
 

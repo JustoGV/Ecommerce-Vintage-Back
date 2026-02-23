@@ -21,6 +21,7 @@ const seed_module_1 = require("./database/seeds/seed.module");
 const user_entity_1 = require("./entities/user.entity");
 const category_entity_1 = require("./entities/category.entity");
 const product_entity_1 = require("./entities/product.entity");
+const _1700000000000_AddCurrencyToProducts_1 = require("./database/migrations/1700000000000-AddCurrencyToProducts");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -35,6 +36,7 @@ exports.AppModule = AppModule = __decorate([
                 url: process.env.DATABASE_URL,
                 entities: [user_entity_1.User, category_entity_1.Category, product_entity_1.Product],
                 autoLoadEntities: true,
+                migrations: [_1700000000000_AddCurrencyToProducts_1.AddCurrencyToProducts1700000000000],
                 synchronize: false,
                 ssl: {
                     rejectUnauthorized: false,

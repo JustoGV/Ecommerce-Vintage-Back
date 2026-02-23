@@ -11,7 +11,8 @@
     "start:prod": "node dist/main",
     "build:prod": "npx nest build",
     "migrate:images": "node scripts/migrate-image-urls-simple.js",
-    "migrate:images:ts": "ts-node scripts/migrate-image-urls.ts"
+    "migrate:images:ts": "ts-node scripts/migrate-image-urls.ts",
+    "migration:run": "ts-node scripts/run-migrations.ts"
   },
   "dependencies": {
     "@nestjs/config": "^4.0.2",
@@ -26,6 +27,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "cloudinary": "^2.7.0",
+  "dotenv": "^16.4.7",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "pg": "^8.16.3",

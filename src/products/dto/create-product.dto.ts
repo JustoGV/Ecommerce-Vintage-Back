@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsOptional, IsUUID, Min, IsArray, IsUrl } from 'class-validator';
+import { IsString, IsNumber, IsOptional, IsUUID, Min, IsArray, IsUrl, IsIn } from 'class-validator';
 import { Column } from 'typeorm';
 
 export class CreateProductDto {
@@ -12,6 +12,11 @@ export class CreateProductDto {
   @Min(0)
   @Column({ nullable: true }) // Agrega nullable
   price: number;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['ARS', 'USD'])
+  currency?: 'ARS' | 'USD';
 
   @IsOptional()
   @IsNumber()

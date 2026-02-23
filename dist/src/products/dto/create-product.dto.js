@@ -31,6 +31,12 @@ __decorate([
 ], CreateProductDto.prototype, "price", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsIn)(['ARS', 'USD']),
+    __metadata("design:type", String)
+], CreateProductDto.prototype, "currency", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.Min)(0),
     __metadata("design:type", Number)
