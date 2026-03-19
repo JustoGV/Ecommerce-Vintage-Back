@@ -4,6 +4,7 @@ import {
   IsInt,
   IsOptional,
   IsString,
+  IsUUID,
   Min,
   ValidateNested,
   IsUrl,
@@ -11,6 +12,9 @@ import {
 import { Type } from 'class-transformer';
 
 export class CheckoutItemDto {
+  @IsUUID()
+  productId: string;
+
   @IsString()
   title: string;
 

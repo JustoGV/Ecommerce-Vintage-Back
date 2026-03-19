@@ -31,6 +31,7 @@ por el admin (no se expone al frontend).
 		{
 			"items": [
 				{
+					"productId": "UUID",
 					"title": "Producto",
 					"quantity": 1,
 					"unitPrice": 10000,
@@ -55,6 +56,10 @@ por el admin (no se expone al frontend).
 			"url": "https://www.mercadopago.com/..."
 		}
 		```
+
+- `POST /webhooks/mercadopago`
+	- Webhook de Mercado Pago para confirmar pagos.
+	- Cuando el pago queda `approved`, descuenta stock segun los items guardados.
 
 ### Base de datos
 
@@ -95,5 +100,6 @@ Actualizar frontend con Mercado Pago:
 3) Ajustar manejo de errores:
 	 - Si /mercadopago/public-key devuelve 404, mostrar mensaje: "Configurar Mercado Pago en admin".
 
-4) Usar el public key para inicializar el SDK de Mercado Pago en el cliente.
+4) Configurar el webhook en Mercado Pago para POST /webhooks/mercadopago.
+5) Usar el public key para inicializar el SDK de Mercado Pago en el cliente.
 ```

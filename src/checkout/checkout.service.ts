@@ -1,10 +1,17 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { MercadoPagoService } from '../mercadopago/mercadopago.service';
 import { CreateCheckoutDto } from './dto/create-checkout.dto';
+import { CheckoutSession } from '../entities/checkout-session.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CheckoutService {
-  constructor(private readonly mercadoPagoService: MercadoPagoService) {}
+  constructor(
+    private readonly mercadoPagoService: MercadoPagoService,
+    @InjectRepository(CheckoutSession)
+    private readonly checkoutRepository: Repository<CheckoutSession>,
+  ) {}
 
   async createPreference(dto: CreateCheckoutDto) {
     const accessToken = await this.mercadoPagoService.getAccessToken();
@@ -56,6 +63,15 @@ export class CheckoutService {
       init_point?: string;
       sandbox_init_point?: string;
     };
+
+    await this.checkoutRepository.save({
+      preferenceId: data.id,
+      items: dto.items.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      })),
+      status: 'pending',
+    });
 
     return {
       id: data.id,

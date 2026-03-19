@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Product } from '../entities/product.entity';
 import { Category } from '../entities/category.entity';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -13,6 +13,7 @@ export class ProductsService {
     private productsRepository: Repository<Product>,
     @InjectRepository(Category)
     private categoriesRepository: Repository<Category>,
+    private dataSource: DataSource,
   ) {}
 
   async create(createProductDto: CreateProductDto, imageUrl?: string): Promise<Product> {
@@ -163,5 +164,40 @@ export class ProductsService {
     
     product.imageUrls = validUrls;
     return this.productsRepository.save(product);
+  }
+
+  async decrementStockForItems(
+    items: Array<{ productId: string; quantity: number }>,
+  ): Promise<void> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      for (const item of items) {
+        const product = await queryRunner.manager.findOne(Product, {
+          where: { id: item.productId },
+          lock: { mode: 'pessimistic_write' },
+        });
+
+        if (!product) {
+          throw new NotFoundException('Product not found');
+        }
+
+        if (product.stock < item.quantity) {
+          throw new BadRequestException('Insufficient stock');
+        }
+
+        product.stock -= item.quantity;
+        await queryRunner.manager.save(product);
+      }
+
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 }

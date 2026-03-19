@@ -13,7 +13,8 @@
     "migrate:images": "node scripts/migrate-image-urls-simple.js",
     "migrate:images:ts": "ts-node scripts/migrate-image-urls.ts",
     "migration:run": "ts-node scripts/run-migrations.ts",
-    "migration:mercadopago": "ts-node scripts/migrate-mercadopago-config.ts"
+    "migration:mercadopago": "ts-node scripts/migrate-mercadopago-config.ts",
+    "migration:checkout-sessions": "ts-node scripts/migrate-checkout-sessions.ts"
   },
   "dependencies": {
     "@nestjs/config": "^4.0.2",

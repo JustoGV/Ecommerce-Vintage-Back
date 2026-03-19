@@ -15,6 +15,7 @@ import { Product } from './entities/product.entity';
 import { MercadoPagoConfig } from './entities/mercadopago-config.entity';
 import { MercadoPagoModule } from './mercadopago/mercadopago.module';
 import { CheckoutModule } from './checkout/checkout.module';
+import { CheckoutSession } from './entities/checkout-session.entity';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { CheckoutModule } from './checkout/checkout.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
-      entities: [User, Category, Product, MercadoPagoConfig],
+      entities: [User, Category, Product, MercadoPagoConfig, CheckoutSession],
       autoLoadEntities: true,
       synchronize: false, // Solo para desarrollo
       ssl: {

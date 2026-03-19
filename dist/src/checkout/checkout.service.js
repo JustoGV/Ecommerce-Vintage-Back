@@ -8,13 +8,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CheckoutService = void 0;
 const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
 const mercadopago_service_1 = require("../mercadopago/mercadopago.service");
+const checkout_session_entity_1 = require("../entities/checkout-session.entity");
+const typeorm_2 = require("typeorm");
 let CheckoutService = class CheckoutService {
-    constructor(mercadoPagoService) {
+    constructor(mercadoPagoService, checkoutRepository) {
         this.mercadoPagoService = mercadoPagoService;
+        this.checkoutRepository = checkoutRepository;
     }
     async createPreference(dto) {
         const accessToken = await this.mercadoPagoService.getAccessToken();
@@ -50,6 +57,14 @@ let CheckoutService = class CheckoutService {
             throw new common_1.InternalServerErrorException(`Mercado Pago error: ${response.status} ${errorBody}`);
         }
         const data = (await response.json());
+        await this.checkoutRepository.save({
+            preferenceId: data.id,
+            items: dto.items.map((item) => ({
+                productId: item.productId,
+                quantity: item.quantity,
+            })),
+            status: 'pending',
+        });
         return {
             id: data.id,
             url: data.init_point || data.sandbox_init_point,
@@ -59,6 +74,8 @@ let CheckoutService = class CheckoutService {
 exports.CheckoutService = CheckoutService;
 exports.CheckoutService = CheckoutService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [mercadopago_service_1.MercadoPagoService])
+    __param(1, (0, typeorm_1.InjectRepository)(checkout_session_entity_1.CheckoutSession)),
+    __metadata("design:paramtypes", [mercadopago_service_1.MercadoPagoService,
+        typeorm_2.Repository])
 ], CheckoutService);
 //# sourceMappingURL=checkout.service.js.map

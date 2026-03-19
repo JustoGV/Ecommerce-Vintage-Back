@@ -8,16 +8,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CheckoutModule = void 0;
 const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
 const checkout_controller_1 = require("./checkout.controller");
 const checkout_service_1 = require("./checkout.service");
 const mercadopago_module_1 = require("../mercadopago/mercadopago.module");
+const checkout_session_entity_1 = require("../entities/checkout-session.entity");
+const webhooks_controller_1 = require("./webhooks.controller");
+const products_module_1 = require("../products/products.module");
 let CheckoutModule = class CheckoutModule {
 };
 exports.CheckoutModule = CheckoutModule;
 exports.CheckoutModule = CheckoutModule = __decorate([
     (0, common_1.Module)({
-        imports: [mercadopago_module_1.MercadoPagoModule],
-        controllers: [checkout_controller_1.CheckoutController],
+        imports: [mercadopago_module_1.MercadoPagoModule, products_module_1.ProductsModule, typeorm_1.TypeOrmModule.forFeature([checkout_session_entity_1.CheckoutSession])],
+        controllers: [checkout_controller_1.CheckoutController, webhooks_controller_1.MercadoPagoWebhooksController],
         providers: [checkout_service_1.CheckoutService],
     })
 ], CheckoutModule);

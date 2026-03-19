@@ -1,4 +1,5 @@
 export declare class CheckoutItemDto {
+    productId: string;
     title: string;
     quantity: number;
     unitPrice: number;

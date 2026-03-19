@@ -19,9 +19,10 @@ const typeorm_2 = require("typeorm");
 const product_entity_1 = require("../entities/product.entity");
 const category_entity_1 = require("../entities/category.entity");
 let ProductsService = class ProductsService {
-    constructor(productsRepository, categoriesRepository) {
+    constructor(productsRepository, categoriesRepository, dataSource) {
         this.productsRepository = productsRepository;
         this.categoriesRepository = categoriesRepository;
+        this.dataSource = dataSource;
     }
     async create(createProductDto, imageUrl) {
         const category = await this.categoriesRepository.findOne({
@@ -134,6 +135,35 @@ let ProductsService = class ProductsService {
         product.imageUrls = validUrls;
         return this.productsRepository.save(product);
     }
+    async decrementStockForItems(items) {
+        const queryRunner = this.dataSource.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+        try {
+            for (const item of items) {
+                const product = await queryRunner.manager.findOne(product_entity_1.Product, {
+                    where: { id: item.productId },
+                    lock: { mode: 'pessimistic_write' },
+                });
+                if (!product) {
+                    throw new common_1.NotFoundException('Product not found');
+                }
+                if (product.stock < item.quantity) {
+                    throw new common_1.BadRequestException('Insufficient stock');
+                }
+                product.stock -= item.quantity;
+                await queryRunner.manager.save(product);
+            }
+            await queryRunner.commitTransaction();
+        }
+        catch (error) {
+            await queryRunner.rollbackTransaction();
+            throw error;
+        }
+        finally {
+            await queryRunner.release();
+        }
+    }
 };
 exports.ProductsService = ProductsService;
 exports.ProductsService = ProductsService = __decorate([
@@ -141,6 +171,7 @@ exports.ProductsService = ProductsService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(product_entity_1.Product)),
     __param(1, (0, typeorm_1.InjectRepository)(category_entity_1.Category)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
-        typeorm_2.Repository])
+        typeorm_2.Repository,
+        typeorm_2.DataSource])
 ], ProductsService);
 //# sourceMappingURL=products.service.js.map

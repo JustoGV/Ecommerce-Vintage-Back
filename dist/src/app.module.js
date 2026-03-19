@@ -24,6 +24,7 @@ const product_entity_1 = require("./entities/product.entity");
 const mercadopago_config_entity_1 = require("./entities/mercadopago-config.entity");
 const mercadopago_module_1 = require("./mercadopago/mercadopago.module");
 const checkout_module_1 = require("./checkout/checkout.module");
+const checkout_session_entity_1 = require("./entities/checkout-session.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -36,7 +37,7 @@ exports.AppModule = AppModule = __decorate([
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'postgres',
                 url: process.env.DATABASE_URL,
-                entities: [user_entity_1.User, category_entity_1.Category, product_entity_1.Product, mercadopago_config_entity_1.MercadoPagoConfig],
+                entities: [user_entity_1.User, category_entity_1.Category, product_entity_1.Product, mercadopago_config_entity_1.MercadoPagoConfig, checkout_session_entity_1.CheckoutSession],
                 autoLoadEntities: true,
                 synchronize: false,
                 ssl: {
