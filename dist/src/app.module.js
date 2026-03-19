@@ -21,7 +21,9 @@ const seed_module_1 = require("./database/seeds/seed.module");
 const user_entity_1 = require("./entities/user.entity");
 const category_entity_1 = require("./entities/category.entity");
 const product_entity_1 = require("./entities/product.entity");
-const _1700000000000_AddCurrencyToProducts_1 = require("./database/migrations/1700000000000-AddCurrencyToProducts");
+const mercadopago_config_entity_1 = require("./entities/mercadopago-config.entity");
+const mercadopago_module_1 = require("./mercadopago/mercadopago.module");
+const checkout_module_1 = require("./checkout/checkout.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -34,9 +36,8 @@ exports.AppModule = AppModule = __decorate([
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'postgres',
                 url: process.env.DATABASE_URL,
-                entities: [user_entity_1.User, category_entity_1.Category, product_entity_1.Product],
+                entities: [user_entity_1.User, category_entity_1.Category, product_entity_1.Product, mercadopago_config_entity_1.MercadoPagoConfig],
                 autoLoadEntities: true,
-                migrations: [_1700000000000_AddCurrencyToProducts_1.AddCurrencyToProducts1700000000000],
                 synchronize: false,
                 ssl: {
                     rejectUnauthorized: false,
@@ -51,6 +52,8 @@ exports.AppModule = AppModule = __decorate([
             users_module_1.UsersModule,
             categories_module_1.CategoriesModule,
             seed_module_1.SeedModule,
+            mercadopago_module_1.MercadoPagoModule,
+            checkout_module_1.CheckoutModule,
         ],
         controllers: [app_controller_1.AppController],
     })

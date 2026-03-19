@@ -12,7 +12,8 @@
     "build:prod": "npx nest build",
     "migrate:images": "node scripts/migrate-image-urls-simple.js",
     "migrate:images:ts": "ts-node scripts/migrate-image-urls.ts",
-    "migration:run": "ts-node scripts/run-migrations.ts"
+    "migration:run": "ts-node scripts/run-migrations.ts",
+    "migration:mercadopago": "ts-node scripts/migrate-mercadopago-config.ts"
   },
   "dependencies": {
     "@nestjs/config": "^4.0.2",

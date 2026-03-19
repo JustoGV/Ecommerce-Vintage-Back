@@ -12,6 +12,9 @@ import { SeedModule } from './database/seeds/seed.module';
 import { User } from './entities/user.entity';
 import { Category } from './entities/category.entity';
 import { Product } from './entities/product.entity';
+import { MercadoPagoConfig } from './entities/mercadopago-config.entity';
+import { MercadoPagoModule } from './mercadopago/mercadopago.module';
+import { CheckoutModule } from './checkout/checkout.module';
 
 @Module({
   imports: [
@@ -21,7 +24,7 @@ import { Product } from './entities/product.entity';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
-      entities: [User, Category, Product],
+      entities: [User, Category, Product, MercadoPagoConfig],
       autoLoadEntities: true,
       synchronize: false, // Solo para desarrollo
       ssl: {
@@ -37,6 +40,8 @@ import { Product } from './entities/product.entity';
     UsersModule,
     CategoriesModule,
     SeedModule,
+    MercadoPagoModule,
+    CheckoutModule,
   ],
   controllers: [AppController],
 })
